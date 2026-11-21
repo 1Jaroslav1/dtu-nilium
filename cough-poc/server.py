@@ -3,7 +3,8 @@
   python server.py            # then open http://localhost:8010
 
 The server is the only program that holds the board's serial port. It records
-exactly like record.py; the page's button (or Space) writes a label.
+exactly like record.py; the page's button (or Space) writes a label, and its
+Reset button closes the session and starts a new one at 0.
 """
 
 from __future__ import annotations
@@ -44,6 +45,10 @@ def make_handler():
             if self.path == "/tap":
                 t = rec.tap()
                 self._send(json.dumps({"t": t, "taps": rec.stats["taps"]}).encode(), "application/json")
+            elif self.path == "/reset":
+                self.server.reset = True
+                rec.stop.set()   # main loop closes this session and starts a new one
+                self._send(b'{"ok": true}', "application/json")
             else:
                 self._send(b"not found", "text/plain", 404)
 
@@ -66,17 +71,27 @@ def main() -> None:
         web = ThreadingHTTPServer(("127.0.0.1", args.http), make_handler())
     except OSError as e:
         raise SystemExit(f"Port {args.http} is busy ({e.strerror}). Stop what uses it, or run with --http <other port>.")
-    rec = Recorder(args.port or find_port(), Path(args.out), preset=args.preset,
-                   on_cough=lambda c, n: print(f"  COUGH #{n} at {c.t:.1f} s  score {c.cough_score:.2f}"))
-    web.rec = rec
-    threading.Thread(target=web.serve_forever, daemon=True).start()
-    print(f"Recording {rec.port} -> {rec.folder}  (preset: {args.preset})\nOpen http://localhost:{args.http}  (Ctrl+C to stop)")
+    port = args.port or find_port()
+    started = False
     try:
-        rec.run()
+        while True:
+            rec = Recorder(port, Path(args.out), preset=args.preset,
+                           on_cough=lambda c, n: print(f"  COUGH #{n} at {c.t:.1f} s  score {c.cough_score:.2f}"))
+            web.rec, web.reset = rec, False
+            if not started:
+                threading.Thread(target=web.serve_forever, daemon=True).start()
+                started = True
+            print(f"Recording {rec.port} -> {rec.folder}  (preset: {args.preset})\n"
+                  f"Open http://localhost:{args.http}  (Ctrl+C to stop)")
+            rec.run()
+            print(f"Saved {rec.wav.n / 16000:.1f} s to {rec.folder}")
+            if not web.reset:
+                break
+            print("Reset: new session")
     except KeyboardInterrupt:
         rec.stop.set()
+        print(f"\nSaved {rec.wav.n / 16000:.1f} s to {rec.folder}")
     web.shutdown()
-    print(f"\nSaved {rec.wav.n / 16000:.1f} s to {rec.folder}")
 
 
 if __name__ == "__main__":

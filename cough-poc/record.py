@@ -38,7 +38,8 @@ DATA = Path(__file__).with_name("data")
 def find_port() -> str:
     port = next(iter(sorted(glob.glob("/dev/ttyACM*"))), None)
     if not port:
-        sys.exit("No /dev/ttyACM* found. Plug the board in with a USB data cable.")
+        print("No /dev/ttyACM* yet: waiting for /dev/ttyACM0. Plug the board in with a USB data cable.")
+        return "/dev/ttyACM0"
     return port
 
 
@@ -119,10 +120,11 @@ class Recorder:
         self.stop = threading.Event()
         self.lock = threading.Lock()
         self.serial: serial.Serial | None = None
+        self.board = "connecting"
 
     def show_count(self) -> None:
         """Board screen shows the count and flashes when it goes up."""
-        if self.serial:
+        if self.serial:   # best effort: the board may have just gone away
             line = json.dumps({"action": "cough_count", "value": str(self.stats["coughs"])})
             self.serial.write((line + "\n").encode())
 
@@ -147,33 +149,58 @@ class Recorder:
             self.on_cough(c, self.stats["coughs"])
 
     def run(self) -> None:
-        """Blocks until stop is set; closes the files on the way out."""
+        """Blocks until stop is set; closes the files on the way out. Survives the
+        board dropping off USB: waits for it, pads the gap with silence so the
+        timeline stays aligned with wall time, and carries on in the same session."""
         peak, last = 0, time.time()
-        self.serial = serial.Serial(self.port, 115200, timeout=1)
+        lost_at = None
         try:
-            self.show_count()   # 0: a new session
-            for x in audio_chunks(self.serial, self.stats, self.stop):
-                with self.lock:
-                    self.wav.write(x)
-                peak = max(peak, int(np.abs(x).max()) if len(x) else 0)
-                if time.time() - last >= 0.25:
-                    self.level_dbfs = round(20 * np.log10(max(peak, 1) / 32768), 1)
-                    peak, last = 0, time.time()
-                for c in self.det.feed(x) if self.det else []:
-                    self._cough(c)
+            while not self.stop.is_set():
+                try:
+                    self.serial = serial.Serial(self.port, 115200, timeout=1)
+                except (serial.SerialException, OSError):
+                    self.board = "disconnected: plug the board back in"
+                    if lost_at is None:
+                        lost_at = time.time()
+                    self.stop.wait(0.5)
+                    continue
+                if lost_at is not None:   # silence for the time the board was away
+                    gap = np.zeros(int((time.time() - lost_at) * SR), np.int16)
+                    with self.lock:
+                        self.wav.write(gap)
+                    self.stats["lost"] += len(gap)
+                    lost_at = None
+                    print(f"  board back after {len(gap) / SR:.1f} s")
+                self.board = "connected"
+                self.show_count()   # new session: 0; after a reconnect: the current count
+                try:
+                    for x in audio_chunks(self.serial, self.stats, self.stop):
+                        with self.lock:
+                            self.wav.write(x)
+                        peak = max(peak, int(np.abs(x).max()) if len(x) else 0)
+                        if time.time() - last >= 0.25:
+                            self.level_dbfs = round(20 * np.log10(max(peak, 1) / 32768), 1)
+                            peak, last = 0, time.time()
+                        for c in self.det.feed(x) if self.det else []:
+                            self._cough(c)
+                except (serial.SerialException, OSError):
+                    print("  board disconnected, waiting for it")
+                    self.board = "disconnected: plug the board back in"
+                    lost_at = time.time()
+                finally:
+                    self.serial.close()
+                    self.serial = None
         finally:
             for c in self.det.flush() if self.det else []:
                 self._cough(c)
             with self.lock:
                 self.wav.close()
-            self.serial.close()
-            self.serial = None
 
     def snapshot(self) -> dict:
         with self.lock:
             return {
                 "folder": str(self.folder), "seconds": round(self.wav.n / SR, 1),
-                "level_dbfs": self.level_dbfs, **self.stats, "recent": list(self.recent),
+                "level_dbfs": self.level_dbfs, "board": self.board, **self.stats, "recent": list(self.recent),
             }
 
 

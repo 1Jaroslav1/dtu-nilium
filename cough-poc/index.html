@@ -35,6 +35,8 @@
   tr.new td { background: color-mix(in srgb, var(--accent) 14%, transparent); }
   #status { color: var(--muted); font-size: .85rem; margin-top: 1rem; }
   #status.err { color: var(--accent); }
+  #reset { margin-top: 1rem; padding: .5rem .9rem; border: 1px solid var(--line); border-radius: .5rem;
+           background: var(--panel); color: var(--fg); font: inherit; cursor: pointer; }
 </style>
 <main>
   <h1>Cough counter</h1>
@@ -58,6 +60,7 @@
     <thead><tr><th>Time</th><th>Score</th><th>Peak (rel.)</th><th>Energy (rel.)</th></tr></thead>
     <tbody id="recent"><tr><td colspan="4">No coughs yet</td></tr></tbody>
   </table>
+  <button id="reset">Reset count (new session)</button>
   <p id="status"></p>
 </main>
 <script>
@@ -83,6 +86,12 @@
     if (e.code === 'Space' && !e.repeat) { e.preventDefault(); tap(); }
   });
 
+  $('reset').addEventListener('click', async () => {
+    if (!confirm('Close this session and start counting from 0?')) return;
+    try { await fetch('/reset', { method: 'POST' }); seen = 0; $('status').textContent = 'Starting a new session…'; }
+    catch { $('status').textContent = 'Reset failed: server unreachable'; $('status').className = 'err'; }
+  });
+
   async function poll() {
     try {
       const s = await (await fetch('/state')).json();
@@ -93,15 +102,18 @@
       $('levelText').textContent = `Level ${s.level_dbfs.toFixed(0)} dBFS` +
         (s.level_dbfs > -1 ? ' · clipping: too close to the mic, step back' : '');
       $('meter').style.width = Math.max(0, Math.min(100, (s.level_dbfs + 80) / 80 * 100)) + '%';
-      if (s.recent.length) {
+      if (!s.recent.length) $('recent').innerHTML = '<tr><td colspan="4">No coughs yet</td></tr>';
+      else {
         const fresh = s.coughs - seen;
         $('recent').innerHTML = s.recent.map((c, i) =>
           `<tr class="${i < fresh && seen ? 'new' : ''}"><td>${c.wall_time.slice(11, 19)}</td>` +
           `<td>${c.cough_score.toFixed(2)}</td><td>${c.peak_dbfs.toFixed(0)} dBFS</td><td>${c.energy_db.toFixed(0)} dB</td></tr>`).join('');
       }
       seen = s.coughs;
-      $('status').textContent = s.lost ? `${s.lost} samples lost on USB` : 'Live';
-      $('status').className = '';
+      const board = s.board === 'connected';
+      $('status').textContent = !board ? `Board ${s.board}` :
+        (s.lost ? `Live · ${(s.lost / 16000).toFixed(1)} s of audio lost on USB` : 'Live');
+      $('status').className = board ? '' : 'err';
     } catch {
       $('status').textContent = 'Server stopped or unreachable';
       $('status').className = 'err';
