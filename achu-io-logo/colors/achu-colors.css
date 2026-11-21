@@ -1,0 +1,15 @@
+/* achu.io brand tokens. Typefaces: Outfit (headlines, numbers), Inter (body, UI) */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --achu-achu-turquoise: #12D8C8;
+  --achu-deep-lagoon: #062F36;
+  --achu-cloud: #F5FBFA;
+  --achu-mint-air: #E2F7F4;
+  --achu-sky-breath: #5CC8FF;
+  --achu-deep-turquoise: #007A73;
+  --achu-coral-puff: #FF7867;
+  --achu-slate: #43636A;
+  --achu-font-display: 'Outfit', Arial, sans-serif;
+  --achu-font-body: 'Inter', Arial, sans-serif;
+}
