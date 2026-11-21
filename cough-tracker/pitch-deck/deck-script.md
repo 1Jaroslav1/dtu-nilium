@@ -60,7 +60,7 @@
 
 > Our next step is to run a two-week pilot with twenty families whose children have asthma. With consent, we’ll compare the device’s counts against a manual reference and ask parents what they’d pay for the log. We’ll ask clinicians whether the one-page report would help in a real consultation.
 >
-> We’re looking for introductions to two groups: doctors or researchers who work on childhood asthma, and families willing to try the box at home for two weeks.
+> For that, we need two introductions. First, to childhood asthma doctors and researchers who can help validate the device. Second, to families with children who have asthma who can try it in our two-week pilot.
 >
 > If you know someone in either group, please find us afterwards. The doctor already asks about the nights. We want parents to have a record they can bring.
 
