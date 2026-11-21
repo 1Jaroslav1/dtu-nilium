@@ -14,6 +14,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+from cough import DEFAULT_PRESET, PRESETS
 from record import DATA, Recorder, find_port
 
 PAGE = Path(__file__).with_name("index.html")
@@ -57,6 +58,7 @@ def main() -> None:
     p.add_argument("--port", default=None, help="serial port (default: first /dev/ttyACM*)")
     p.add_argument("--http", type=int, default=8010)
     p.add_argument("--out", default=str(DATA))
+    p.add_argument("--preset", choices=PRESETS, default=DEFAULT_PRESET, help="detector sensitivity")
     args = p.parse_args()
 
     # Take the web port before creating a session, so a busy port leaves no empty folder.
@@ -64,11 +66,11 @@ def main() -> None:
         web = ThreadingHTTPServer(("127.0.0.1", args.http), make_handler())
     except OSError as e:
         raise SystemExit(f"Port {args.http} is busy ({e.strerror}). Stop what uses it, or run with --http <other port>.")
-    rec = Recorder(args.port or find_port(), Path(args.out),
+    rec = Recorder(args.port or find_port(), Path(args.out), preset=args.preset,
                    on_cough=lambda c, n: print(f"  COUGH #{n} at {c.t:.1f} s  score {c.cough_score:.2f}"))
     web.rec = rec
     threading.Thread(target=web.serve_forever, daemon=True).start()
-    print(f"Recording {rec.port} -> {rec.folder}\nOpen http://localhost:{args.http}  (Ctrl+C to stop)")
+    print(f"Recording {rec.port} -> {rec.folder}  (preset: {args.preset})\nOpen http://localhost:{args.http}  (Ctrl+C to stop)")
     try:
         rec.run()
     except KeyboardInterrupt:

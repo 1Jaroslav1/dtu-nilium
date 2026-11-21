@@ -28,7 +28,7 @@ from pathlib import Path
 import numpy as np
 import serial
 
-from cough import SR, Cough, CoughDetector, EVENT_FIELDS
+from cough import SR, Cough, CoughDetector, EVENT_FIELDS, PRESETS, DEFAULT_PRESET
 
 CHUNK = 256
 WAV_SECONDS = 3600
@@ -98,19 +98,20 @@ class WavWriter:
 class Recorder:
     """One recording session: audio to WAV, coughs to events.csv, taps to labels.csv."""
 
-    def __init__(self, port: str, out: Path = DATA, detect: bool = True, on_cough=None):
+    def __init__(self, port: str, out: Path = DATA, detect: bool = True, on_cough=None,
+                 preset: str = DEFAULT_PRESET):
         self.port = port
         self.start = datetime.now().astimezone()
         self.folder = Path(out) / f"{self.start:%Y%m%d-%H%M%S}"
         self.folder.mkdir(parents=True)
         (self.folder / "session.json").write_text(
-            json.dumps({"start": self.start.isoformat(), "port": port, "sample_rate": SR}))
+            json.dumps({"start": self.start.isoformat(), "port": port, "sample_rate": SR, "preset": preset}))
         self.wav = WavWriter(self.folder, self.start)
         self._labels = csv.writer(open(self.folder / "labels.csv", "w", newline="", buffering=1))
         self._labels.writerow(["t", "wall_time"])
         self._events = csv.DictWriter(open(self.folder / "events.csv", "w", newline="", buffering=1), EVENT_FIELDS)
         self._events.writeheader()
-        self.det = CoughDetector() if detect else None
+        self.det = CoughDetector(preset) if detect else None
         self.on_cough = on_cough
         self.stats = {"lost": 0, "bad": 0, "taps": 0, "coughs": 0}
         self.level_dbfs = -120.0
@@ -181,9 +182,10 @@ def main() -> None:
     p.add_argument("--port", default=None)
     p.add_argument("--out", default=str(DATA))
     p.add_argument("--no-detect", action="store_true")
+    p.add_argument("--preset", choices=PRESETS, default=DEFAULT_PRESET, help="detector sensitivity")
     args = p.parse_args()
 
-    rec = Recorder(args.port or find_port(), Path(args.out), not args.no_detect,
+    rec = Recorder(args.port or find_port(), Path(args.out), not args.no_detect, preset=args.preset,
                    on_cough=lambda c, n: print(f"  COUGH #{n} at {c.t:.1f} s  score {c.cough_score:.2f}  peak {c.peak_dbfs:.0f} dBFS"))
 
     def on_enter() -> None:   # one Enter per cough, right after it

@@ -1,10 +1,11 @@
 """Cough detection on 16 kHz mono audio with YAMNet, one event per cough.
 
-YAMNet scores ~1 s windows every 0.25 s. Consecutive windows whose Cough score
-reaches the threshold form a region; inside a region, loudness peaks at least
-MIN_GAP_S apart are counted as individual coughs.
+YAMNet scores ~1 s windows every 0.1 s. A window whose cough score reaches the
+threshold opens a region, which stays open while the score stays above `keep`;
+inside a region, loudness peaks at least `min_gap_s` apart are separate coughs.
+Presets trade misses against false coughs: strict, sensitive, max (default).
 
-  python cough.py detect SESSION_DIR_OR_WAV   # writes events.csv (+ frames.csv)
+  python cough.py detect SESSION_DIR_OR_WAV [--preset strict]   # events.csv + frames.csv
   python cough.py evaluate SESSION_DIR        # compares events.csv with labels.csv
 """
 
@@ -15,7 +16,7 @@ import csv
 import json
 import wave
 import zipfile
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, replace
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -28,12 +29,26 @@ HOP = 1600           # 0.1 s between windows: 0.25 s missed coughs that fell bet
 MODEL = Path(__file__).with_name("models") / "yamnet.tflite"
 CLASSES = {"cough": 42, "throat_clearing": 43, "sneeze": 44, "speech": 0, "laughter": 13}
 
-THRESHOLD = 0.1      # sensitive: a false cough is better than a missed one
-KEEP = 0.05          # an open region stays open while the score is at least this
-MIN_GAP_S = 0.35     # two coughs closer than this count as one
-PEAK_WITHIN_DB = 12  # a peak must be within this many dB of the region's loudest
-PROMINENCE_DB = 8    # and stand out this much from its surroundings
 ENV_S = 0.01         # loudness envelope resolution
+
+
+@dataclass(frozen=True)
+class Settings:
+    threshold: float       # cough score that opens a region
+    keep: float            # an open region stays open while the score is at least this
+    min_gap_s: float       # two coughs closer than this count as one
+    prominence_db: float   # a loudness peak must stand out this much from its surroundings
+    within_db: float       # and be within this many dB of the region's loudest peak
+    throat: bool           # count "throat clearing" as cough too
+
+
+# Measured on the three tapped sessions (15 taps, ~16 min), see README.
+PRESETS = {
+    "strict":    Settings(0.5, 0.2, 0.6, 15, 6, False),     # 9/15 caught, 2 extra
+    "sensitive": Settings(0.1, 0.05, 0.35, 8, 12, False),   # 14/15 caught, 9 extra
+    "max":       Settings(0.03, 0.01, 0.3, 6, 15, True),    # 15/15 caught, 26 extra
+}
+DEFAULT_PRESET = "max"
 
 
 @dataclass
@@ -67,7 +82,7 @@ def _db(x: float) -> float:
     return 20 * np.log10(max(x, 1e-9))
 
 
-def split_coughs(x: np.ndarray, start: float, score: float) -> list[Cough]:
+def split_coughs(x: np.ndarray, start: float, score: float, cfg: Settings) -> list[Cough]:
     """Individual coughs in one cough region (float samples in [-1, 1])."""
     hop = int(ENV_S * SR)
     n = len(x) // hop
@@ -77,9 +92,9 @@ def split_coughs(x: np.ndarray, start: float, score: float) -> list[Cough]:
     env_db = 20 * np.log10(env)
     peaks, _ = find_peaks(
         env_db,
-        height=env_db.max() - PEAK_WITHIN_DB,
-        prominence=PROMINENCE_DB,
-        distance=max(1, int(MIN_GAP_S / ENV_S)),
+        height=env_db.max() - cfg.within_db,
+        prominence=cfg.prominence_db,
+        distance=max(1, int(cfg.min_gap_s / ENV_S)),
     )
     if len(peaks) == 0:
         peaks = np.array([int(env_db.argmax())])
@@ -107,9 +122,9 @@ def split_coughs(x: np.ndarray, start: float, score: float) -> list[Cough]:
 class CoughDetector:
     """Streaming: feed int16 chunks, get finished coughs back."""
 
-    def __init__(self, threshold: float = THRESHOLD, frames_csv: Path | None = None):
+    def __init__(self, cfg: Settings | str = DEFAULT_PRESET, frames_csv: Path | None = None):
         self.model = Yamnet()
-        self.threshold = threshold
+        self.cfg = PRESETS[cfg] if isinstance(cfg, str) else cfg
         self.buf = np.zeros(0, dtype=np.float32)
         self.buf_start = 0       # absolute sample index of buf[0]
         self.next_frame = 0      # absolute start sample of the next window
@@ -128,14 +143,16 @@ class CoughDetector:
             i = self.next_frame - self.buf_start
             s = self.model.scores(self.buf[i : i + WIN])
             cough = float(s[CLASSES["cough"]])
+            if self.cfg.throat:
+                cough = max(cough, float(s[CLASSES["throat_clearing"]]))
             if self.frames:
                 self.frames.writerow([round(self.next_frame / SR, 3), *(round(float(s[k]), 4) for k in CLASSES.values())])
             # sneezes are out of scope: a window that sounds more like a sneeze is not a cough
             coughy = cough > s[CLASSES["sneeze"]]
-            if self.region is None and coughy and cough >= self.threshold:
+            if self.region is None and coughy and cough >= self.cfg.threshold:
                 self.region = [self.next_frame, self.next_frame + WIN]
                 self.region_score = cough
-            elif self.region is not None and coughy and cough >= KEEP:
+            elif self.region is not None and coughy and cough >= self.cfg.keep:
                 self.region[1] = self.next_frame + WIN
                 self.region_score = max(self.region_score, cough)
             elif self.region is not None:
@@ -152,8 +169,8 @@ class CoughDetector:
         self.region = None
         x = self.buf[a - self.buf_start : b - self.buf_start]
         out = []
-        for c in split_coughs(x, a / SR, self.region_score):
-            if c.t - self.last_t >= MIN_GAP_S:   # neighbouring regions can share a cough
+        for c in split_coughs(x, a / SR, self.region_score, self.cfg):
+            if c.t - self.last_t >= self.cfg.min_gap_s:   # neighbouring regions can share a cough
                 out.append(c)
                 self.last_t = c.t
         return out
@@ -196,7 +213,10 @@ def write_events(path: Path, coughs: list[Cough], start: datetime | None) -> Non
 
 def cmd_detect(args) -> None:
     wavs, start, out = session_audio(Path(args.target))
-    det = CoughDetector(args.threshold, out / "frames.csv")
+    cfg = PRESETS[args.preset]
+    if args.threshold is not None:
+        cfg = replace(cfg, threshold=args.threshold)
+    det = CoughDetector(cfg, out / "frames.csv")
     coughs: list[Cough] = []
     for wav in wavs:   # hourly files are one continuous stream
         x = read_wav(wav)
@@ -204,7 +224,7 @@ def cmd_detect(args) -> None:
             coughs += det.feed(x[i : i + SR])
     coughs += det.flush()
     write_events(out / "events.csv", coughs, start)
-    print(f"{len(coughs)} coughs -> {out / 'events.csv'} (window scores in frames.csv)")
+    print(f"{len(coughs)} coughs ({args.preset}) -> {out / 'events.csv'} (window scores in frames.csv)")
 
 
 def cmd_evaluate(args) -> None:
@@ -235,7 +255,8 @@ def main() -> None:
     sub = p.add_subparsers(dest="cmd", required=True)
     d = sub.add_parser("detect", help="find coughs in a session folder or one WAV")
     d.add_argument("target")
-    d.add_argument("--threshold", type=float, default=THRESHOLD)
+    d.add_argument("--preset", choices=PRESETS, default=DEFAULT_PRESET)
+    d.add_argument("--threshold", type=float, default=None, help="override the preset's threshold")
     d.set_defaults(fn=cmd_detect)
     e = sub.add_parser("evaluate", help="compare events.csv with labels.csv")
     e.add_argument("target")
