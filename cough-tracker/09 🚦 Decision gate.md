@@ -19,6 +19,8 @@ On the gate date, round 1 counts as delivered if we bring:
 
 | Criterion | Green | Yellow | 
 |---|---|---|
+| **H6:** Danish cough researchers who say cost/effort (not lack of need) stopped them using objective counts | ≥2 of 3 | ≤1 of 3 |
+| **H7:** of those, how many prefer bedside/no-wear over Hyfe's watch, once they hear both | ≥1 | 0 |
 | Segments where ≥50% **act on a cough count today** | ≥1 | 0 |
 | Of those, % with a workaround | ≥40% | <40% |
 | Pilots agreed **with a date** | ≥1 | 0 |

@@ -46,7 +46,7 @@
 - **Analysis:** geometric means on log-transformed data, because cough frequency is heavily skewed. Reported as a ratio to baseline.
 - **Secondary:** awake-only coughs, % of patients with ≥30% drop, Cough Severity Diary (CSD), severity VAS, Leicester Cough Questionnaire (LCQ).
 - **Result:** 45 mg lowered cough by only **18.5% vs placebo** (p=0.041) in COUGH-1 and **14.6%** (p=0.031) in COUGH-2. 15 mg was no different from placebo. On placebo, cough fell by more than 50%.
-- **Regulatory outcome [CHECK]:** approved in Japan and the EU. **FDA declined twice** (2022, 2023): statistically significant but too small to show a clinically meaningful change. Taste disturbance was common and may have told patients they were on the drug.
+- **Regulatory outcome (verified in [[research/S11 — Gefapixant FDA rejection]]: the 2022 CRL questioned the cough counting system, and the 2023 CRL cited no substantial evidence of effectiveness):** approved in Japan and the EU. **FDA declined twice** (2022, 2023): statistically significant but too small to show a clinically meaningful change. Taste disturbance was common and may have told patients they were on the drug.
 
 ## How visible effects are measured
 
