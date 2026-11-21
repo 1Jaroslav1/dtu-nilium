@@ -25,6 +25,8 @@ A cough count is only valuable if **someone acts on it**. "Your cough went up 30
 
 If nobody does, the product is a curiosity, however well the device works.
 
+> **Current problem statement (v2): see [[11 🧭 Problem statement]].** This file keeps the history (v0 → v1).
+
 ## Problem shaping — v1 (after desk research, 2026-11-21)
 
 The v0 problem ("cough is measured by asking the patient") is **true but not painful enough**. Desk evidence reshapes it:
@@ -42,6 +44,16 @@ The v0 problem ("cough is measured by asking the patient") is **true but not pai
 1. **Research tier (measurement quality).** *Chronic-cough researchers need multi-night objective counts, but clinical-grade monitors are costly and 24 h snapshots are noisy, so small studies are underpowered.* → buyer: university/hospital research groups (research use only, no notified body). Open: S1 hands-on test, plus whether researchers say cost blocks them.
 2. **Care-home night watch (different signal).** *Night staff in care homes miss early chest infections because residents present atypically and checks are sparse.* → the signal is probably **respiratory rate**, not cough (S6). Open: can the kit measure it, and does staff act on it (H1)?
 3. **Partner signal.** *Home-COPD programmes (e.g. Kivo) lack an objective night-time symptom feed.* → offer the sensor, not a certified product. Open: whether they want it at all.
+
+### Update after desk round 3 (S7–S13)
+
+| Statement | What changed | Status |
+|---|---|---|
+| 1. Research tier | Measurement problem **confirmed** (S5, S9, S11: 24 h snapshots, ~38% daily variation, FDA questioned the counting method). But **Hyfe already serves academics with multi-day monitoring** (S7). The academic user group is ~10 registered studies since 2022 worldwide, **0 in the Nordics** (S10). Legal route open via ethics committee (S12) | **Weakened.** Real problem, but it's already being solved and the users are elsewhere |
+| 2. Care-home night watch | Not researched this round. Still blocked by S6 (can the kit measure breathing rate?) and H1 | Open |
+| 3. Partner signal | Not researched | Open |
+
+**The sharpest remaining question (S13):** Danish cough researchers (Rigshospitalet, Herlev-Gentofte, Aarhus, SDU) use **registries and questionnaires only**. Is that because objective monitoring is too costly or impractical (a gap), or because they don't need it (no demand)? **Ask 2–3 of them this week.** This one answer decides whether statement 1 lives.
 
 **Dropped for now:** "a bedside cough counter for clinics/patients". It's a me-too of Albus Home, has no proven clinical action, and needs IIa certification.
 
