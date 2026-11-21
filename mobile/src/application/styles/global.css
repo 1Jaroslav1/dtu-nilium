@@ -5,51 +5,73 @@
 /*
  * Design tokens (HSL without the hsl() wrapper).
  * Keep in sync with src/shared/theme/tokens.ts — that file feeds
- * React Navigation and other non-className APIs.
+ * React Navigation, SVG charts and other non-className APIs.
+ *
+ * Palette: UI-Pedia (ink text instead of black, Rule 15; accent only on
+ * tappable things, Rule 55; separate dark palette, Rule 3).
+ * custom: --primary darkened from #6F67F9 to #5B52E8 so white text passes 4.5:1.
  */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 228 71% 98.6%;
+    --foreground: 219 26% 28%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 219 26% 28%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 63%;
-    --radius: 0.625rem;
+    --popover-foreground: 219 26% 28%;
+    --primary: 244 76% 61.6%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 233 100% 96.7%;
+    --secondary-foreground: 219 26% 28%;
+    --muted: 233 100% 96.7%;
+    --muted-foreground: 218 15% 43.7%;
+    --accent: 233 100% 96.7%;
+    --accent-foreground: 219 26% 28%;
+    --destructive: 355 69% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 231 20% 87.3%;
+    --border-subtle: 225 31% 94.9%;
+    --input: 231 20% 87.3%;
+    --ring: 244 76% 61.6%;
+    --success: 155 52% 93.5%;
+    --success-foreground: 158 85% 26%;
+    --warning: 37 86% 94%;
+    --warning-foreground: 34 87% 32.4%;
+    --chart-1: 243 82% 67.3%;
+    --chart-1-muted: 243 84% 90.2%;
+    --chart-2: 187 69% 35.7%;
+    --chart-2-muted: 186 51% 92.7%;
+    --radius: 0.75rem;
   }
 
   .dark:root {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 70.9% 59.4%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --background: 0 0% 11.8%;
+    --foreground: 237 65% 94.3%;
+    --card: 0 0% 18.4%;
+    --card-foreground: 237 65% 94.3%;
+    --popover: 0 0% 18.4%;
+    --popover-foreground: 237 65% 94.3%;
+    --primary: 237 55% 78.2%;
+    --primary-foreground: 0 0% 11.8%;
+    --secondary: 240 17% 27.5%;
+    --secondary-foreground: 237 65% 94.3%;
+    --muted: 240 17% 27.5%;
+    --muted-foreground: 227 17% 68.8%;
+    --accent: 240 17% 27.5%;
+    --accent-foreground: 237 65% 94.3%;
+    --destructive: 355 70% 64%;
+    --destructive-foreground: 0 0% 11.8%;
+    --border: 0 0% 29%;
+    --border-subtle: 0 0% 24%;
+    --input: 0 0% 29%;
+    --ring: 237 55% 78.2%;
+    --success: 156 34% 17.3%;
+    --success-foreground: 152 55% 67.2%;
+    --warning: 39 43% 16.7%;
+    --warning-foreground: 36 81% 71.2%;
+    --chart-1: 237 55% 78.2%;
+    --chart-1-muted: 243 22% 36.1%;
+    --chart-2: 187 50% 54%;
+    --chart-2-muted: 188 33% 18.2%;
   }
 }
