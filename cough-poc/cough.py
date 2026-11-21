@@ -28,11 +28,11 @@ HOP = 1600           # 0.1 s between windows: 0.25 s missed coughs that fell bet
 MODEL = Path(__file__).with_name("models") / "yamnet.tflite"
 CLASSES = {"cough": 42, "throat_clearing": 43, "sneeze": 44, "speech": 0, "laughter": 13}
 
-THRESHOLD = 0.5      # strict: a missed cough is better than a false one
-KEEP = 0.2           # an open region stays open while the score is at least this
-MIN_GAP_S = 0.6      # two coughs closer than this count as one (tuned on session 20261121-134804)
-PEAK_WITHIN_DB = 6   # a peak must be within this many dB of the region's loudest
-PROMINENCE_DB = 15   # and stand out this much from its surroundings
+THRESHOLD = 0.1      # sensitive: a false cough is better than a missed one
+KEEP = 0.05          # an open region stays open while the score is at least this
+MIN_GAP_S = 0.35     # two coughs closer than this count as one
+PEAK_WITHIN_DB = 12  # a peak must be within this many dB of the region's loudest
+PROMINENCE_DB = 8    # and stand out this much from its surroundings
 ENV_S = 0.01         # loudness envelope resolution
 
 

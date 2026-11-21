@@ -65,27 +65,28 @@ tap is a false alarm. A tap with no cough is a miss.
 
 ## Results so far
 
-Detector settings now:
-- cough score threshold 0.5 to open a cough region, 0.2 to keep it open;
-- windows every 0.1 s;
-- loudness peaks at least 0.6 s apart, 15 dB prominence, within 6 dB of the loudest peak.
+The detector leans towards false positives: a false cough is better than a missed one.
+
+- A cough region opens at a YAMNet cough score of 0.1 and stays open down to 0.05.
+- Windows are 0.1 s apart.
+- Inside a region, loudness peaks count as separate coughs if they are at least
+  0.35 s apart, stand out by 8 dB, and are within 12 dB of the loudest peak.
 
 | Session | Length | Taps | Matched | Missed | Extra |
 |---|---|---|---|---|---|
-| `20261121-134804` | 11.7 min | 8 | 7 | 1 | 2 |
-| `20261121-141627` | 1 min | 2 | 1 | 1 | 0 |
-| `20261121-141747` | 3 min | 5 | 1 | 4 | 0 |
+| `20261121-134804` | 11.7 min | 8 | 8 | 0 | 8 |
+| `20261121-141627` | 1 min | 2 | 1 | 1 | 1 |
+| `20261121-141747` | 3 min | 5 | 5 | 0 | 0 |
 
-- Away from taps, YAMNet's cough score never went above 0.05 in about 16 minutes
-  of normal activity. Nothing that isn't a cough is being counted.
-- The 2 extras in the first session are strong second coughs (0.74 and 0.94)
-  about 1 s after a tapped one. They look like bouts that got one tap.
-- Two of the misses clipped the mic (0 dBFS), so YAMNet heard "explosion" or
-  "gunshot". These were coughs right at the mic. Stay at least 0.5 m away. The
-  page now warns when the input clips, and `events.csv` has a `clipped` column.
-- The other misses have only speech or quiet sounds before the tap. They are
-  either very weak coughs or taps with nothing to match.
-- Moving from windows every 0.25 s to every 0.1 s raised one real cough from
-  0.59 to 0.89. Scores depend on where the cough falls in the window.
-- Labels are the weak spot. One tap can mean one cough or one bout, and a tap
-  can come up to 10 s late.
+The earlier strict settings (open at 0.5, keep at 0.2, peaks 0.6 s apart, 15 dB
+prominence, within 6 dB) matched 9 of 15 taps with 2 extras.
+
+- Away from taps, YAMNet's cough score stayed at or below 0.05 in about 16 minutes
+  of normal activity. Most extras sit next to a tapped cough: they are other
+  coughs in a bout that got one tap, or one cough split into its loud phases.
+- Two coughs right at the mic clipped it (0 dBFS), so YAMNet heard "explosion".
+  Stay at least 0.5 m away. The page warns when the input clips, and
+  `events.csv` has a `clipped` column.
+- Matching is lenient: a tap claims any unmatched cough in the 10 s before it.
+- Labels are the weak spot. One tap can mean one cough or one bout, so "extra"
+  is an upper bound on false alarms.
