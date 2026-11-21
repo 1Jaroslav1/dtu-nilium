@@ -1,0 +1,36 @@
+name: smoke_test
+board: 14port
+modules:
+- id: st7735_tft
+  instance: st7735_tft
+  ports:
+  - port_1
+  - port_2
+- id: button
+  instance: button
+  port: port_7
+code:
+  globals: "// Centered text on the 160x80 screen (canvas mode: caller does display()).\n\
+    void showCentered(const char* text, uint16_t color) {\n  st7735_tft.setTextSize(2);\n\
+    \  st7735_tft.setTextColor(color);\n  int16_t x = (st7735_tft.width() - st7735_tft.textWidth(text))\
+    \ / 2;\n  int16_t y = (st7735_tft.height() - st7735_tft.lineHeight()) / 2;\n \
+    \ st7735_tft.setCursor(x < 0 ? 0 : x, y < 0 ? 0 : y);\n  st7735_tft.print(text);\n\
+    }\n"
+  setup: 'st7735_tft.clear();
+
+    showCentered("Atech OK", ST7735_TFT::COLOR_WHITE);
+
+    st7735_tft.display();
+
+    button.off();
+
+    '
+  loop: "// isPressed() polls the level, so the firmware's own press/release events\n\
+    // (\"button\", 1/0) keep working. Redraw only when the state changes, so the\n\
+    // boot message stays until the first press.\nstatic bool wasDown = false;\nbool\
+    \ down = button.isPressed();\nif (down != wasDown) {\n  wasDown = down;\n  if\
+    \ (down) {\n    st7735_tft.fillRect(0, 0, st7735_tft.width(), st7735_tft.height(),\
+    \ ST7735_TFT::COLOR_GREEN);\n    showCentered(\"PRESSED\", ST7735_TFT::COLOR_BLACK);\n\
+    \    button.setColor(0, 255, 0);\n  } else {\n    st7735_tft.clear();\n    showCentered(\"\
+    ready\", ST7735_TFT::COLOR_WHITE);\n    button.off();\n  }\n  st7735_tft.display();\n\
+    }\n"

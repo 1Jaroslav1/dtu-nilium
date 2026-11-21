@@ -25,6 +25,26 @@ A cough count is only valuable if **someone acts on it**. "Your cough went up 30
 
 If nobody does, the product is a curiosity, however well the device works.
 
+## Problem shaping — v1 (after desk research, 2026-11-21)
+
+The v0 problem ("cough is measured by asking the patient") is **true but not painful enough**. Desk evidence reshapes it:
+
+| v0 assumption | What the evidence says | Source |
+|---|---|---|
+| Nobody can count coughs objectively | Many can: VitaloJAK, Hyfe, Strados, Albus, C-mo | [[07 ⚔️ Competition map]] |
+| Clinicians want the number | Counts are rarely used outside research; clinical utility unproven | [[research/H1 — Who acts on a cough count (proxy)]] |
+| We can sell to clinics/care homes | That makes it a Class IIa medical device with a notified body | [[research/S4 — EU MDR classification]] |
+| A cough count matters in care homes | Pneumonia there is atypical; resp. rate >25/min is the strong marker | [[research/H1 — Who acts on a cough count (proxy)]] |
+| One 24 h recording is fine | In chronic cough, day-to-day variation is ~38%, so a 24 h snapshot misleads | [[research/S5 — Nightly vs 24 h snapshot]] |
+
+**Three candidate problem statements to test, in priority order:**
+
+1. **Research tier (measurement quality).** *Chronic-cough researchers need multi-night objective counts, but clinical-grade monitors are costly and 24 h snapshots are noisy, so small studies are underpowered.* → buyer: university/hospital research groups (research use only, no notified body). Open: S1 hands-on test, plus whether researchers say cost blocks them.
+2. **Care-home night watch (different signal).** *Night staff in care homes miss early chest infections because residents present atypically and checks are sparse.* → the signal is probably **respiratory rate**, not cough (S6). Open: can the kit measure it, and does staff act on it (H1)?
+3. **Partner signal.** *Home-COPD programmes (e.g. Kivo) lack an objective night-time symptom feed.* → offer the sensor, not a certified product. Open: whether they want it at all.
+
+**Dropped for now:** "a bedside cough counter for clinics/patients". It's a me-too of Albus Home, has no proven clinical action, and needs IIa certification.
+
 ## What the kit gives us and what it doesn't
 
 | Module | Role | Limit |

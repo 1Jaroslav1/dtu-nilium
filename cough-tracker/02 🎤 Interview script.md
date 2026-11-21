@@ -21,6 +21,12 @@ Then dig. How did you know how much they were coughing? Who told you? Did it cha
 
 **Listen for:** a decision that depended on the cough amount. If there isn't one, that's the most important data point of the call.
 
+**Added after desk research (H1 proxy):**
+- Clinic: "Tell me about the last patient whose cough you tried to quantify. What did you use, and did the number change what you did?"
+- Care home: "Think of the last resident who developed a chest infection. What was the first thing anyone noticed, and at what time of day?"
+- Trial / CRO (S5): "In your last cough study, how many recording days did each patient do, and what happened when a recording failed or the day was unusual?"
+- Care home (S4): "When did you last bring in a new monitoring device? Who had to approve it?"
+
 ## Block 2 — when it went wrong, and what it cost → H2, H3
 
 > "When did you last find out too late that someone's cough or breathing was getting worse? What did it cost?"
