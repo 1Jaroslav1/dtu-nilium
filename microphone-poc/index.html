@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microphone noise level</title>
+<style>
+  body { margin: 2rem auto; padding: 0 1rem; max-width: 54rem; background: #f3f6fa; color: #14243a; font: 1rem/1.5 system-ui, sans-serif; }
+  h1 { margin-bottom: .25rem; }
+  button { padding: .55rem .9rem; font: inherit; cursor: pointer; }
+  button:disabled { cursor: default; }
+  #status { min-height: 1.5em; }
+  figure { margin: 1.25rem 0; padding: .75rem; border: 1px solid #cbd5e1; border-radius: .5rem; background: white; }
+  figcaption { padding-left: .35rem; }
+  canvas { display: block; width: 100%; height: 300px; }
+</style>
+<main>
+  <h1>Microphone noise level</h1>
+  <p>Live Atech microphone readings over a rolling 30-second window.</p>
+  <button id="connect">Connect microphone</button>
+  <button id="disconnect" disabled>Disconnect</button>
+  <p id="status" role="status">Connect your Atech board over USB to begin.</p>
+  <figure>
+    <figcaption>RMS level (dBFS) · elapsed time (s)</figcaption>
+    <canvas id="chart" role="img" aria-label="Microphone RMS level over elapsed time">
+      Graph of microphone level over time.
+    </canvas>
+    <p>Latest level: <span id="level">—</span></p>
+  </figure>
+  <p>dBFS measures level relative to the microphone’s digital full scale.</p>
+</main>
+<script>
+  const connect = document.querySelector('#connect');
+  const disconnect = document.querySelector('#disconnect');
+  const status = document.querySelector('#status');
+  const level = document.querySelector('#level');
+  const chart = document.querySelector('#chart');
+  const context = chart.getContext('2d');
+  const windowSeconds = 30;
+  const floor = -100;
+  const samples = [];
+  let reader;
+  let startedAt;
+
+  function drawChart() {
+    const { width, height } = chart.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    chart.width = Math.round(width * scale);
+    chart.height = Math.round(height * scale);
+    context.setTransform(scale, 0, 0, scale, 0, 0);
+
+    const left = 46;
+    const right = width - 18;
+    const top = 18;
+    const bottom = height - 28;
+    const latest = samples.at(-1);
+    const end = Math.max(windowSeconds, latest?.time ?? 0);
+    const start = end - windowSeconds;
+    const x = (time) => left + (time - start) / windowSeconds * (right - left);
+    const y = (db) => top + db / floor * (bottom - top);
+
+    context.font = '12px system-ui';
+    context.fillStyle = '#334155';
+    context.strokeStyle = '#dbe3ed';
+    context.textAlign = 'right';
+    for (let db = 0; db >= floor; db -= 20) {
+      context.fillText(db, left - 8, y(db) + 4);
+      context.beginPath();
+      context.moveTo(left, y(db));
+      context.lineTo(right, y(db));
+      context.stroke();
+    }
+    context.textAlign = 'center';
+    for (let time = Math.ceil(start / 5) * 5; time <= end; time += 5) {
+      context.fillText(time, x(time), bottom + 19);
+      context.beginPath();
+      context.moveTo(x(time), top);
+      context.lineTo(x(time), bottom);
+      context.stroke();
+    }
+
+    if (!latest) return;
+    context.strokeStyle = '#075dc4';
+    context.fillStyle = '#075dc4';
+    context.lineWidth = 2;
+    context.beginPath();
+    for (const { time, db } of samples) context.lineTo(x(time), y(db));
+    context.stroke();
+    context.beginPath();
+    context.arc(x(latest.time), y(latest.db), 3, 0, 2 * Math.PI);
+    context.fill();
+  }
+
+  function readLevel(line) {
+    let message;
+    try {
+      message = JSON.parse(line);
+    } catch {
+      return;
+    }
+    const event = message?.payload;
+    const rms = event?.value;
+    if (message?.type !== 'event' || event?.event_type !== 'sensor' ||
+        event.key !== 'microphone_level' || !Number.isInteger(rms) ||
+        rms < 0 || rms > 32767) return;
+
+    const now = performance.now();
+    startedAt ??= now;
+    const time = (now - startedAt) / 1000;
+    const db = rms === 0 ? floor : 20 * Math.log10(rms / 32767);
+    if (!samples.length) status.textContent = 'Receiving microphone levels.';
+    samples.push({ time, db });
+    while (samples[0].time < time - windowSeconds) samples.shift();
+    level.textContent = rms === 0 ? 'Below display floor' : db.toFixed(1) + ' dBFS';
+  }
+
+  connect.addEventListener('click', async () => {
+    connect.disabled = true;
+    let port;
+    let opened = false;
+    status.textContent = 'Choose the Atech USB serial port.';
+    try {
+      port = await navigator.serial.requestPort();
+      await port.open({ baudRate: 115200 });
+      opened = true;
+      reader = port.readable.getReader();
+      disconnect.disabled = false;
+      samples.length = 0;
+      startedAt = undefined;
+      level.textContent = '—';
+      drawChart();
+      status.textContent = 'Connected. Waiting for microphone levels…';
+
+      const decoder = new TextDecoder();
+      let pending = '';
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        const lines = (pending + decoder.decode(value, { stream: true })).split('\n');
+        pending = lines.pop();
+        for (const line of lines) readLevel(line);
+        drawChart();
+      }
+      status.textContent = 'Microphone disconnected.';
+    } catch (error) {
+      status.textContent = error.name === 'NotFoundError'
+        ? 'No serial port selected.'
+        : 'Serial connection failed. ' + error.message;
+    } finally {
+      disconnect.disabled = true;
+      reader?.releaseLock();
+      reader = undefined;
+      if (opened) {
+        try {
+          await port.close();
+        } catch {
+          // An unplugged device may already be closed.
+        }
+      }
+      connect.disabled = false;
+    }
+  });
+
+  disconnect.addEventListener('click', () => {
+    disconnect.disabled = true;
+    reader?.cancel().catch(() => {});
+  });
+
+  if (!navigator.serial) {
+    connect.disabled = true;
+    status.textContent = 'Open this page in Chrome or Edge on localhost for USB serial access.';
+  }
+  new ResizeObserver(drawChart).observe(chart);
+</script>
+</html>

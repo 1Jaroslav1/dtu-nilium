@@ -1,0 +1,5 @@
+name: microphone_poc
+board: 14port
+modules:
+  - {id: microphone, instance: microphone, ports: [1, 2]}
+feedback: false
