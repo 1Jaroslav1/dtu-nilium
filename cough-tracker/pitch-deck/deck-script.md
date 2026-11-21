@@ -1,126 +1,78 @@
-# Pitch deck, part 1: Situation → Complication → Solution
+# Pucio Counts Coughs — presenter script
 
-**Summary:** script for the first 9 slides of the cough-tracker deck, told in the Pucio storybook format (story pages) with matching notebook pages for the numbers.
-**Format:** 16:9 live pitch · English · built with the `pucio-pitch-deck` skill
-**Source:** the Situation / Complication / Key solution statement (see [[11 🧭 Problem statement]])
+**Pitch 4:00 · Questions 1:00.** Keep the last slide up for questions. Times include slide changes and the live demo.
 
----
+| Part | Slide | Time on slide | Elapsed |
+|---|---|---:|---|
+| Problem | 1 · Pucio Counts Coughs | 25 s | 0:00–0:25 |
+| Problem | 2 · Who needs more than one day? | 40 s | 0:25–1:05 |
+| Solution + demo | 3 · A cough counter by the bed | 30 s | 1:05–1:35 |
+| Solution + demo | 4 · Live demo | 55 s | 1:35–2:30 |
+| Team + learnings | 5 · Our team | 25 s | 2:30–2:55 |
+| Team + learnings | 6 · What we learned today | 30 s | 2:55–3:25 |
+| Next step + ask | 7 · Help us reach two study teams | 35 s | 3:25–4:00 |
+| Questions | Keep slide 7 up | 60 s | 4:00–5:00 |
 
-## Cast (4: the payer is not the user)
+## 1 · Pucio Counts Coughs · 25 s
 
-| Real role | Storybook character | Why they're in it |
-|---|---|---|
-| The obvious truth | **Pucio** | Points out that one day ≠ the real cough, and that the answer is next to the bed |
-| Founder | **Artur** (T-shirt print: `[PRODUCT]`) | Flaw: over-engineering. He wants a 37-sensor vest |
-| Patient with chronic cough (the user) | **Kasia** | Coughs for months; gets recorded on one day only |
-| Trial lead / researcher (who pays) | **The Boss**, here "the Professor" | Has the €11,000 monitor and the noisy data |
+*Point to 38%, then pause after the question.*
 
-Running gag: Artur's **polka-dot confetti tube**. Pucio keeps it hidden until the data is real. It stays open at the end of part 1 and pays off on the closing page.
+> What if the only day you measure is a quiet one? In a study of 36 people with chronic cough, the typical day-to-day variability in cough frequency was about 38 percent. That’s a lot of variation to miss when you only see one day. We’re building Pucio to make it easier to count across nights.
 
-## Slide plan
+The 38% is the median within-person relative standard deviation of daily cough frequency. [Primary study in ERJ Open Research](https://publications.ersnet.org/content/erjor/11/1/00670-2024)
 
-| # | Type | Heading | The claim (moral) |
-|---|---|---|---|
-| 1 | Story | Cover | Pucio counts coughs |
-| 2 | Story | One day at the clinic | New cough drugs are judged by counting coughs for 24 h at a few visits |
-| 3 | Notebook | Situation in numbers | 4–10% of adults · 24 h × a few visits |
-| 4 | Story | Which day is real? | One day misleads in 2 of 3 people |
-| 5 | Story | The expensive box | €11k + 1.5 h per recording; academics use questionnaires |
-| 6 | Notebook | Why one day isn't enough | 38% · FDA ×2 · €11,000 |
-| 7 | Story | Nothing to wear | Bedside assistant, every night, no audio stored |
-| 8 | Story | Every night, at home | Multi-night home data; the device helps the bedroom |
-| 9 | Notebook | How it works | Count on device → nightly data + smart-home actions |
+## 2 · Who needs more than one day? · 40 s
 
-Headings + morals alone: *new drugs are judged by one-day cough counts → one day is noisy → objective monitors are expensive, so academics fall back to questionnaires → a bedside assistant counts every night with nothing to wear → researchers get real multi-night home data, and patients get a better bedroom.*
+> Our first users are PhD students and postdocs running academic chronic-cough studies. Their principal investigator decides what the grant can pay for. Some drug trials use objective cough counts from 24-hour recordings at a handful of visits. A reference monitor lists at about eleven thousand euros, and there’s analyst time on top of that. The Danish studies we reviewed used questionnaires or registry data. What we want to learn from researchers is whether cost and effort drive that choice, and whether more nights of counts would help them answer a study question.
 
----
+[Equipment and analyst time](../research/S8%20%E2%80%94%20Cost%20of%20current%20monitoring.md) · [Danish research groups](../research/S13%20%E2%80%94%20Danish%20research%20groups.md)
 
-## 1 · Cover (story)
+## 3 · A cough counter by the bed · 30 s
 
-- **Title:** PUCIO
-- **Subtitle:** COUNTS COUGHS
-- **Tagline:** Pucio and Artur listen to the night
-- **Illustration:** night-time bedroom. Kasia asleep under a blanket. On the nightstand, a small round device with a soft glowing light. Artur peeks in at the door with his confetti tube, grinning. Pucio, in pyjama-red sweater, holds a finger to his lips: "shh".
-- **Speaker note:** "This is a story about a cough that nobody counts properly, and about a little boy who noticed."
+*Point to the nightstand, then advance to the demo slide.*
 
-## 2 · One day at the clinic (story, Situation)
+> Picture a small microphone on the nightstand. The person goes to bed as usual, and the researcher gets a count for each night. They could see whether one quiet night was unusual or part of a longer pattern. Our design goal is to save only the counts. Today we’ll show the first piece of that workflow: a microphone and a detector updating the count in real time.
 
-- Kasia has been coughing for months.
-- New medicines are coming. To prove they work, doctors count coughs.
-- Kasia wears a recorder for one day at the clinic.
-- **That day, Kasia hardly coughs.**
-- **Moral:** New cough drugs are judged by an objective count of coughs per hour, usually from 24 hours of recording at a few clinic visits.
-- **Illustration:** clinic room. Kasia sits with a recorder clipped to her collar and a lanyard of wires, looking fine and slightly puzzled. The Professor holds a clipboard, waiting. Pucio sits on a chair swinging his legs, looking at the wall clock.
-- **Speaker note:** "Chronic cough affects 4 to 10 percent of adults. The drugs being developed for them are judged on one number, coughs per hour, and that number usually comes from a single day."
+## 4 · Live demo · 55 s
 
-## 3 · Situation in numbers (notebook)
+*Before the pitch, open the [live counter](http://localhost:8010/) in a separate tab and verify that the Atech board is connected, the input meter moves, and a test cough appears. If the server is stopped, use the [prototype setup](../../cough-poc/README.md). Use a team member who has agreed to be recorded. Stay at least half a metre from the microphone.*
 
-- **Headline:** Millions cough for months, and new drugs are judged on one day of counting
-- **Big number 1:** `4–10%` · of adults live with chronic cough · *Source: S13*
-- **Big number 2:** `24 h` · of recording at a few clinic visits is how a drug's effect is measured today · *Source: S9*
-- **Moral:** The endpoint is objective, but it's a snapshot.
-- **Speaker note:** keep it short, these two numbers set up the problem.
+**1:35–1:55 · Show the board, switch to the counter, point to the meter and detected count.**
 
-## 4 · Which day is real? (story, Complication A)
+> This is the Atech microphone. It sends audio over USB to the laptop, which runs the detector. The dashboard shows the input level and a running total. Watch the number marked “detected.”
 
-- On Monday, Kasia coughs all evening.
-- On Tuesday, almost not at all.
-- The Professor has only Tuesday. He frowns at the chart.
-- **Pucio holds up a calendar: "Which day is the real Kasia?"**
-- **Moral:** A person's cough changes about 38% from one day to the next. In two out of three people, a single day doesn't show their real pattern.
-- **Illustration:** split moment in one room. On the left, a wall calendar with Monday covered in many small cough marks and Tuesday almost empty. The Professor holds a printout with a single short bar and looks puzzled. Pucio stands on a stool, holding the calendar up to him. Kasia in the background with a tissue.
-- **Speaker note:** "So the drug might work, or not, and one day can't tell you. Regulators noticed: the FDA rejected gefapixant twice, first questioning the cough counting system, then finding no substantial evidence that it works."
+**1:55–2:15 · Cough once, wait for the event, and point to the new time stamp. If needed, retry once, then return to the deck.**
 
-## 5 · The expensive box (story, Complication B)
+> There’s the new detection and the time it happened. The count updates on its own. That orange button is for manual labels when we evaluate the detector.
 
-- The Professor wants many more days.
-- Artur unpacks the monitor: €11,000.
-- Each recording needs 1.5 hours of listening.
-- **Pucio is handed a questionnaire: "Cough: a little / a lot?"**
-- **Moral:** Gold-standard monitors cost ≈ €11,000 each plus ~1.5 h of analyst time per recording. Academic groups, including every Danish group we found, measure cough with questionnaires instead of counts.
-- **Illustration:** an office table. An open cardboard box with a big grey professional monitor and a price tag. A long paper strip of audio waveform spills onto the floor. The Professor looks at his almost empty wallet. Artur scratches his head. Pucio holds a questionnaire with two tick boxes, unimpressed.
-- **Speaker note (be careful):** the moral places two facts side by side and does **not** say one causes the other. That academics use questionnaires *because of cost* is **unverified (H6)**. Say it as a question: "We think cost is a big reason, and we're testing that."
+**2:15–2:30 · Switch back to the deck and advance to the team slide.**
 
-## 6 · Why one day isn't enough (notebook)
+> We save audio during these prototype tests so we can go back through missed or extra detections. The overnight version would keep the counts alone.
 
-- **Headline:** One day is noisy, the FDA noticed, and counting is expensive
-- **Card 1:** `~38%` · day-to-day change in a person's cough; one day misleads in 2 of 3 people · *S5*
-- **Card 2:** `2×` · FDA rejections of gefapixant: 2022, the counting system was questioned; 2023, no substantial evidence it works · *S11*
-- **Card 3:** `≈ €11,000` · per gold-standard monitor + ~1.5 h analyst time per recording · *S8 (price: vendor listing; labour: data)*
-- **Moral:** Better drugs need better measurement: more nights, at a lower cost.
-- **Speaker note:** these are the three proofs behind the story slides.
+*If the live counter stalls, point to the captured dashboard already on slide 4 and say:*
 
-## 7 · Nothing to wear (story, Solution A)
+> Here’s a capture from our prototype. You can see the detected count at the top and the time-stamped events below it. We’ll use these logs to check how the detector performs overnight.
 
-- Artur draws a vest with 37 sensors.
-- Kasia shakes her head: "I won't sleep in that."
-- Pucio walks to the bed.
-- **Pucio puts a small box on the nightstand.**
-- **Moral:** A bedside smart-home assistant that counts coughs automatically every night, with nothing to wear and no audio stored.
-- **Illustration:** bedroom by day. Artur proudly holds up a huge sketch of a vest covered in sensors and cables, a long paper roll of features trailing behind him. Kasia, arms crossed, shakes her head. Pucio, on tiptoes, places a small round white device with a soft light on the nightstand next to the bed.
-- **Speaker note:** "The solution is what Pucio did: stop asking patients to wear things, and put the counter where the cough happens."
+## 5 · Our team · 25 s
 
-## 8 · Every night, at home (story, Solution B)
+*Introduce yourself by name and point to the group photo. Add teammates’ names here if you want to introduce each person. Allow about 8 seconds for names.*
 
-- Kasia sleeps in her own bed. The box counts every cough.
-- The air gets dry, so the box switches on the humidifier.
-- In the morning, the Professor sees every night, not just one day.
-- **Artur reaches for the confetti. Pucio hides it: "First, the trial."**
-- **Moral:** Researchers get objective multi-night data from the patient's real home. Patients get a device that helps their bedroom instead of just watching them.
-- **Illustration:** split between night and morning. Night side: Kasia asleep, the nightstand device glowing softly, a small humidifier puffing mist. Morning side: the Professor smiling at a tablet with a row of many small nightly bars. Artur lifts the confetti tube; Pucio pulls it back behind his back.
-- **Speaker note:** "Two customers, one device: the trial gets real data, and the patient gets something useful."
+> We’re the four-person team behind Pucio. Today we connected the microphone to a live counter, ran short recording sessions with manual labels, and looked at how academic cough studies collect data. Comparing our taps with what the detector picked up gave us a clear next experiment.
 
-## 9 · How it works (notebook)
+## 6 · What we learned today · 30 s
 
-- **Headline:** Counts on the device, every night, in the home you already have
-- **Flow:** `Bedside microphone` (listens overnight) → `On-device cough counting` (no audio stored) → `Nightly counts` (for the research team)
-- **Second row:** `Room sensors` (temperature, humidity) → `Smart-home link` (Home Assistant, Google Home, Alexa) → `Actions` (e.g. humidifier on when air is dry)
-- **Moral:** Nothing to wear, nothing recorded, and it gets more useful the longer it stays.
-- **Speaker note:** don't name a model accuracy here; that belongs on a traction or validation slide once we have numbers.
+> In about 16 minutes of early testing, our stricter setting matched nine of fifteen manual taps. A more sensitive setting matched fourteen, with nine extra detections instead of two. One tap can stand for a whole coughing fit, so some of those extras may be real coughs that we didn’t label separately. We learned that we need a clearer reference count before we can say how accurate the counter is overnight.
 
----
+[Prototype methods and results](../../cough-poc/README.md)
 
-## Open placeholders
-- `[PRODUCT]`: product name for Artur's T-shirt and the title slide.
-- Illustrations: 6 prompts in `illustration-prompts.md`; the slides show placeholders until the images exist.
-- H6 (cost → questionnaires) is unverified; the deck keeps the two facts side by side without "so".
+## 7 · Help us reach two study teams · 35 s
+
+*Look up from the slide and give the room a moment after the ask.*
+
+> Can you introduce us to two Danish chronic-cough researchers? We’d like to walk through their last study: how they measured cough, what it took to get a count, and whether several nights at home would have changed anything. In parallel, we’ll run a consented overnight test and compare the device against a manual count. Those two steps will tell us whether the bedside format solves a problem worth pursuing. Thank you. We have a minute for questions.
+
+## Questions · 4:00–5:00
+
+- **How accurate is it?** We have short tests with manual taps. The overnight comparison will give us a better reference for misses and extra detections.
+- **What about privacy?** We save audio for consented prototype tests. The planned bedside device would process audio locally and retain only counts.
+- **Why use this instead of Hyfe or VitaloJAK?** Hyfe already offers multi-day tracking, and VitaloJAK is established in large trials. We’re testing whether academic teams value a bedside option that patients can use without wearing anything.
