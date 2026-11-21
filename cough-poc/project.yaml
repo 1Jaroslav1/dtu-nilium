@@ -1,0 +1,92 @@
+name: cough_poc
+board: 14port
+modules:
+  - {id: microphone, instance: microphone, ports: [1, 2]}
+  - {id: st7735_tft, instance: screen, ports: [3, 4]}
+feedback: false
+code:
+  globals: |
+    #include "mbedtls/base64.h"
+
+    // Raw 16 kHz int16 mono audio goes to the laptop as text lines:
+    //   {"type":"audio","seq":N,"drop":D,"b64":"<256 samples, little-endian int16>"}
+    // seq counts chunks, drop counts samples lost on the board, so the host can
+    // tell a gap from a clean stream.
+    static const int RING = 16384;                 // 1 s of audio
+    static const int CHUNK = 256;                  // samples per line
+    static int16_t ring[RING];
+    static volatile uint32_t ringHead = 0;         // written by the capture task
+    static volatile uint32_t ringTail = 0;         // read by loop
+    static volatile uint32_t dropped = 0;
+
+    void onMic(const int16_t* samples, int count, void*) {
+      uint32_t head = ringHead;
+      for (int i = 0; i < count; i++) {
+        if (head - ringTail >= RING) { dropped++; continue; }
+        ring[head % RING] = samples[i];
+        head++;
+      }
+      ringHead = head;
+    }
+  setup: |
+    microphone.onAudio(onMic, nullptr);
+    // The USB TX buffer is smaller than one audio line: let writes wait for the
+    // host instead of cutting lines (generated setup sets 0 = never wait).
+    Serial.setTxTimeoutMs(50);
+  loop: |
+    static uint32_t seq = 0;
+    static int16_t chunk[CHUNK];
+    static unsigned char b64[CHUNK * 2 * 4 / 3 + 8];
+    static char line[CHUNK * 2 * 4 / 3 + 96];
+    while (ringHead - ringTail >= CHUNK) {
+      uint32_t tail = ringTail;
+      for (int i = 0; i < CHUNK; i++) chunk[i] = ring[(tail + i) % RING];
+      size_t olen = 0;
+      mbedtls_base64_encode(b64, sizeof(b64), &olen, (const unsigned char*)chunk, sizeof(chunk));
+      b64[olen] = 0;
+      int n = snprintf(line, sizeof(line),
+                       "{\"type\":\"audio\",\"seq\":%lu,\"drop\":%lu,\"b64\":\"%s\"}\n",
+                       (unsigned long)seq, (unsigned long)dropped, (const char*)b64);
+      Serial.write((const uint8_t*)line, n);
+      ringTail = tail + CHUNK;
+      seq++;
+    }
+    static unsigned long statLast = 0;
+    if (millis() - statLast >= 2000) {
+      statLast = millis();
+      Serial.printf("{\"type\":\"event\",\"payload\":{\"event_type\":\"log\",\"key\":\"mic_stats\",\"value\":\"head=%lu drop=%lu\"}}\n",
+                    (unsigned long)ringHead, (unsigned long)dropped);
+    }
+
+    // ---- screen: cough count, flashes orange on each new cough ----
+    // The laptop detects coughs and sends {"action":"cough_count","value":"N"}.
+    // A higher N flashes the screen; a lower one (new session) just redraws.
+    static int count = -1;                 // -1: no laptop session yet
+    static unsigned long flashUntil = 0;
+    static bool wasFlashing = false, dirty = true;
+    if (atech_action == "cough_count") {
+      int n = atech_value.toInt();
+      if (n > count && count >= 0) flashUntil = millis() + 500;
+      count = n;
+      dirty = true;
+      atechDone();
+    }
+    bool flashing = millis() < flashUntil;
+    if (flashing != wasFlashing) { wasFlashing = flashing; dirty = true; }
+    if (dirty) {
+      dirty = false;
+      uint16_t bg = flashing ? ST7735_TFT::COLOR_ORANGE : ST7735_TFT::COLOR_BLACK;
+      uint16_t fg = flashing ? ST7735_TFT::COLOR_BLACK : ST7735_TFT::COLOR_WHITE;
+      int w = screen.width(), h = screen.height();
+      screen.fillScreen(bg);
+      screen.setTextColor(fg);
+      screen.setTextSize(1);
+      const char* title = count < 0 ? "waiting for laptop" : (flashing ? "COUGH!" : "coughs");
+      screen.setCursor((w - screen.textWidth(title)) / 2, 4);
+      screen.print(title);
+      String num = count < 0 ? String("-") : String(count);
+      screen.setTextSize(5);
+      screen.setCursor((w - screen.textWidth(num)) / 2, (h - screen.lineHeight()) / 2 + 6);
+      screen.print(num);
+      screen.display();
+    }
