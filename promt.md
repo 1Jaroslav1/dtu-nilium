@@ -1,0 +1,10 @@
+Use .md file D:\DTU\B2C-night-cough-tracker-pivot.md to create new presentation. The result should be prompt to agent which will create pichdeck. He will receive also this  D:\DTU\B2C-night-cough-tracker-pivot.md
+Pitch script (about 75 seconds)
+1. Problem
+
+One child in ten has asthma symptoms, and half of them aren't well controlled.1 When the doctor decides whether a child's asthma is under control, one of just four questions is: did your child wake at night?2 A third of asthmatic children do.3 Healthy children almost never cough at night.4 But parents are asleep. In one study, parents reported cough on 66 nights; the microphone heard it on 93.5 At night, what parents report barely matches what's recorded.6 And night cough can start climbing up to five days before an attack.7 So treatment is decided on guesswork.
+
+2. Solution
+
+Our bedside box listens so parents can sleep. No wearable, no phone in bed, no audio ever stored. It counts every cough, flags whether it sounds wet or dry, and turns four weeks of nights into one page the doctor can read in a minute. That includes how long a wet cough has lasted, because past four weeks, guidelines say act.8 It also watches the bedroom. Not "add humidity", which the evidence doesn't back,9 but damp and mould, linked to 30 to 50 percent more asthma problems.10 Four in ten Danes see condensation on their bedroom windows every winter.11 Cough apps cost thirty euros a year and live on your phone.12 We built the one for the child's bedroom and the doctor's desk.
+pitch deck in total for 4 minutes. Based on the research that I did, and we uploaded and tried to do it in a narrative with the prompt that I gave you about the problem and solution in this prompt, and try to link this to the real sources that you can find in the research. So that's basically the idea.
