@@ -1,0 +1,6 @@
+# Atech hardware kit (https://atech.dev) - SDK + CLI: atech guide / new / build / upload / check
+atech
+
+# Talk to a running board: events from the board, actions to it
+pyserial>=3.5      # USB: 115200 baud, one JSON object per line
+websockets>=12.0   # WiFi: wss://gateway.atech.dev/ws/live/<project id>
