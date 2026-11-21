@@ -14,7 +14,8 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.mutedForeground,
-        tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
+        // lineHeight keeps descenders (g, y) from being clipped.
+        tabBarLabelStyle: { fontSize: 12, lineHeight: 16, fontWeight: '600' },
         tabBarStyle: { backgroundColor: colors.card, borderTopColor: colors.borderSubtle, minHeight: 64 },
         tabBarItemStyle: { paddingVertical: 6 },
       }}
