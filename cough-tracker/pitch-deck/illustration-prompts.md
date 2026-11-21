@@ -1,101 +1,35 @@
-# Illustration prompts, part 1
+# Illustration prompts
 
-Each prompt below = **STYLE** + **CHARACTERS** + its **SCENE**. Paste all three together.
-If your image tool accepts reference images, attach from `.claude/skills/pucio-pitch-deck/assets/reference/`:
-- always: `01-cover-cast.jpg` (Pucio, Artur, Kasia)
-- when the Professor is in the scene: `04-user-vs-payer.jpg` or `07-purchase-process.jpg`
-- add: "Match the characters and drawing style of the reference images; create a new scene."
+The seven scenes were generated with the built-in image tool, using `01-cover-cast.jpg` and `04-user-vs-payer.jpg` from `.claude/skills/pucio-pitch-deck/assets/reference/`. Each prompt combines the shared direction with the scene below.
 
-Save the images as `img/01.jpg`, `img/02.jpg`, `img/04.jpg`, `img/05.jpg`, `img/07.jpg`, `img/08.jpg`. The deck picks them up automatically.
+## Shared direction
 
-## STYLE (same for every image)
+Generate a single original 3:2 landscape picture-book illustration for a slide. The attached first image is a style and cast reference for Artur and Kasia; the second is a style and cast reference for the Professor and for Pucio in his correct red sweater (ignore the central seated extra entirely). Create a new composition, keep the familiar cast, handcrafted colored-pencil and crayon grain on warm off-white paper, gentle rosy cheeks, expressive eyes, muted cream/teal/mustard/brick red/sky blue, soft edges, deliberate children's picture-book staging. Medium-wide, important subjects centered vertically with spare room around edges. No panels unless specifically requested. No captions, lettering, branding, numbers or watermarks. Pucio: tiny three-year-old, messy dark-brown hair, large round dark eyes, rosy cheeks, solid red long-sleeve sweater, rolled dark teal trousers, brown shoes. Artur: mid-30s, tousled curly sandy-blond hair, thick round black glasses, light moustache and stubble, eager grin, cream-white T-shirt with tiny abstract mark, forearm tattoo and black watch, beige chinos, white sneakers. Kasia: about 30, voluminous dark-brown curly hair, mustard rolled-sleeve button-up, wide teal-green trousers, brown loafers, spiral notebook. Professor: about 60, swept-back grey hair, navy blazer, light-blue shirt, grey trousers, brown wallet. The same tall cream confetti tube has coral/mustard/teal polka dots and dark lid. The prototype is a palm-sized round matte ivory cylindrical puck with a thin warm glowing ring and no screen. Use only characters specified in the scene.
 
-```
-Warm children's picture-book illustration, coloured-pencil and crayon texture on
-cream paper, soft muted palette (cream #FBF3E6, teal #3A6B6B, mustard #E1A63A,
-brick red #B5533C, sky #8EC5C7), gentle rosy cheeks, expressive big round eyes,
-simple interiors with potted plants, soft light, no text or letters anywhere in
-the image, landscape 3:2 framing, medium-wide shot with full figures, calm
-negative space at the edges.
-```
+## What’s next? · `img/11.png`
 
-## CHARACTERS (same for every image)
+A quiet daylight meeting around a wooden table with a few potted plants. Kasia writes in her open spiral notebook, the Professor nods, and Artur reaches hopefully for a tall polka-dot confetti tube. Pucio holds up a cream sign with one large hand-drawn question-mark symbol, holding a protective hand over the confetti tube near him. Show exactly these four characters, no extras. The question mark is the only drawn glyph.
 
-```
-- Pucio: toddler about 3, messy dark-brown hair, big round dark eyes, rosy
-  cheeks, red long-sleeve sweater, dark teal trousers with rolled hems, small
-  brown shoes. Curious, decisive.
-- Artur: man mid-30s, tousled sandy-blond curly hair, round thick black-rimmed
-  glasses, light moustache and stubble, huge eager grin, plain white T-shirt with
-  a tiny unreadable print on the chest, black-and-grey forearm tattoo, black
-  smartwatch, baggy beige chinos, white sneakers.
-- Kasia: woman about 30, big voluminous dark-brown curly hair, mustard-yellow
-  button-up shirt with rolled sleeves, wide teal-green trousers, brown loafers.
-  Kind, a little tired.
-- The Professor: man about 60, swept-back grey hair, navy blazer, light-blue
-  shirt, grey trousers, brown shoes, brown wallet. Thoughtful, slightly sceptical.
-RUNNING GAG OBJECT: tall confetti tube with colourful polka dots.
-THE DEVICE: small round white bedside gadget the size of a coffee cup, with a
-soft warm ring of light; no screen, no wires on the person.
-```
+## Cover · `img/01.png`
 
-## 01 · Cover (portrait-ish 4:3, leave the top 40% as calm sky for the title)
+A cosy bedroom at night with teal blue moonlight and a window with stars. The unnamed ADULT PATIENT sleeps under a cream blanket facing away, face completely concealed. The small ivory bedside device glows clearly on its nightstand. Artur peeks in through the door holding the polka-dot tube while Pucio, in foreground, puts a finger to his lips to hush him. Only these three people. Illustration lives below a slide title outside image, so compose to fill the frame, with focus and all key details within central 80% vertically.
 
-```
-SCENE: a cosy bedroom at night, seen from the doorway, teal-blue night light.
-Kasia (in a mustard pyjama top) is asleep under a cream blanket. On the
-nightstand, THE DEVICE glows softly. Artur peeks in at the doorway, grinning,
-holding the polka-dot confetti tube. Pucio stands between them, finger to his
-lips: "shh". Top part of the image is plain soft teal-blue wall for a title.
-```
+## One day at the clinic · `img/02.png`
 
-## 02 · One day at the clinic
+A small sunlit clinic: Kasia, wearing mustard and teal, fits a small portable recorder and belt to an unnamed seated adult patient seen strictly from behind with face hidden. Professor in navy has a clipboard and waits. Pucio looks up at a round wall clock without numerals and points. Clearly show the technician and separate patient; no Artur.
 
-```
-SCENE: a bright clinic room. Kasia sits on a chair with a small recorder clipped
-to her collar and thin wires to a box on her belt; she looks perfectly fine and
-slightly puzzled. The Professor stands holding a clipboard, waiting for her to
-cough. Pucio sits on the next chair swinging his legs, looking up at a round wall
-clock. A potted plant by the window.
-```
+## Which day is real? · `img/04.png`
 
-## 04 · Which day is real?
+In a cream research office Kasia compares cough-count sheets, one crowded with red tally strokes and the other nearly empty. Pucio in his red sweater and teal trousers stands on a little wooden stool and holds up a simple large two-column calendar sheet with one square densely marked with red strikes and one almost empty, his face searching. Professor holds a printout with a single short bar and looks puzzled. No Artur, no patient.
 
-```
-SCENE: an office with a big wall calendar. On the calendar, Monday's square is
-full of many small red scribble marks; Tuesday's square has almost none. The
-Professor holds up a printout showing one tiny short bar and frowns, puzzled.
-Pucio stands on a wooden stool holding the calendar page out towards him,
-pointing at Monday. Kasia in the background, holding a tissue, smiling politely.
-```
+## The expensive box · `img/05.png`
 
-## 05 · The expensive box
+A lab table. Artur has opened a cardboard box with a bulky grey professional cough monitor and a long scribbled waveform printout. The Professor peers into his nearly empty brown wallet. Kasia hands Pucio a simple cream questionnaire sheet with two large empty checkboxes, no lettering. Pucio looks up with a quizzical expression. All four characters only.
 
-```
-SCENE: an office table. An open cardboard box holds a large grey professional
-recording monitor with a big price tag (no readable text). A long paper strip of
-audio waveform spills off the table and across the floor. The Professor looks
-into his almost empty brown wallet. Artur scratches his head, glasses askew.
-Pucio stands at the table holding a single sheet with two big tick boxes,
-unimpressed.
-```
+## Nothing to wear · `img/07.png`
 
-## 07 · Nothing to wear
+In a cosy simple bedroom by daylight, Artur proudly unrolls a sketch of a comically complicated wearable vest absolutely covered in sensors and wires. Kasia in mustard and teal shakes her head. In the right foreground, Pucio on tiptoe places the little glowing ivory tabletop puck on the nightstand. The bedside puck is the focal point. Only these three characters.
 
-```
-SCENE: a bedroom in daylight. Artur proudly holds up a huge drawing of a vest
-covered in sensors and cables; a long paper roll of diagrams trails behind him on
-the floor. Kasia stands with arms crossed, shaking her head with a small smile.
-Pucio, on tiptoes, places THE DEVICE on the nightstand next to the bed.
-```
+## Every night, at home · `img/08.png`
 
-## 08 · Every night, at home
-
-```
-SCENE: one image split softly into night (left) and morning (right).
-Left: Kasia asleep in her bed, THE DEVICE glowing on the nightstand, a small
-white humidifier beside it puffing gentle mist.
-Right: the Professor smiling at a tablet that shows a long row of small bars,
-one per night. Artur lifts the polka-dot confetti tube with a big grin; Pucio
-pulls it back and hides it behind his back.
-```
+One continuous panoramic watercolor vignette with a soft transition from left blue nighttime bedroom to right warm morning room. At left, an unnamed adult sleeps facing away under a blanket with face fully hidden. Beside them an ivory bedside puck glows and a small humidifier gives off a wisp of mist. At right, Kasia in her mustard shirt and the Professor in navy look at a tablet with several nightly bars. Artur reaches for his party tube and Pucio pulls the polka-dot tube back to hide it behind himself. Focus on Pucio's gesture. Avoid hard panels.
