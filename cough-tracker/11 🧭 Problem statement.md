@@ -9,7 +9,7 @@
 
 ## One sentence
 
-> Cough research relies on 24-hour snapshots that miss a symptom varying ~38% day to day, because accurate monitoring is too expensive to run every night. We count coughs every night, cheaply, from the bedside.
+> Cough research relies on 24-hour snapshots that miss a symptom varying ~38% day to day, because accurate monitoring is too expensive to run every night. Our bedside smart-home assistant counts coughs every night and manages the bedroom climate, with nothing to wear.
 
 ## Situation
 
@@ -24,7 +24,7 @@ Chronic cough affects **4–10% of adults** [DATA, S13]. New cough drugs are bei
 
 ## Key solution
 
-A **low-cost bedside device** that counts coughs automatically **every night**, with **nothing to wear** and **no audio stored**. It also logs room temperature and humidity, so researchers get **objective multi-night data at a fraction of today's cost**.
+A **bedside smart-home assistant** that counts coughs automatically **every night**, with **nothing to wear** and **no audio stored**. It connects to the home's existing smart-home system (e.g. Home Assistant, Google Home or Alexa), logs room temperature and humidity, and can act on them, for example switching on a humidifier when the air gets dry. Researchers get **objective multi-night data from the patient's real home**, and patients get a device that helps their bedroom instead of just watching them.
 
 ## Who
 
@@ -44,11 +44,12 @@ A **low-cost bedside device** that counts coughs automatically **every night**, 
 | # | Weak point | Why it matters | Test |
 |---|---|---|---|
 | 1 | **The ⚠️ link:** do researchers avoid objective counts *because of* cost and effort, or because they don't need them? | If they don't need them, the problem collapses | **H6**: 2–3 interviews with Danish groups |
-| 2 | **Hyfe** already counts coughs over many days for academic studies (S7) | If "nothing to wear, bedside, cheaper" doesn't matter to researchers, we have no reason to exist | **H7**: interviews + Hyfe academic quote |
+| 2 | **Hyfe** already counts coughs over many days for academic studies (S7) | If "nothing to wear, bedside, part of the smart home" doesn't matter to researchers, we have no reason to exist | **H7**: interviews + Hyfe academic quote |
+| 3 | **The smart-home angle** is new and untested | If patients don't use smart-home systems, or the climate control doesn't help them, it's a feature nobody needs (and it may raise the device's regulatory class) | **H8**: interviews with patients + check smart-home adoption |
 
 ## Expected question: "Why not Hyfe?"
 
-Our current answer is a **hypothesis, not a fact**: no watch or phone to wear and charge, it works for people who won't wear devices in bed, and it's cheaper per participant. H7 tests it.
+Our current answer is a **hypothesis, not a fact**: no watch or phone to wear and charge, it works for people who won't wear devices in bed, and it fits into the home as a smart-home assistant that also improves the bedroom climate. H7 and H8 test it.
 
 ---
 

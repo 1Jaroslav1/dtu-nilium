@@ -24,7 +24,8 @@
 | H4 | **Patients accept a microphone in the bedroom if no audio leaves the device** | On-device counting is a real selling point, so put it in the one-liner | If they refuse anyway, home use is dead → only clinical/trial settings | conversation | to verify | | **Proxy (desk):** >80% acceptability for a privacy-limited wearable (n=54, volunteers). No bedroom-mic attitude study found. "No audio leaves" is table stakes (Hyfe, C-mo). See [[research/H4 — Bedroom mic acceptance (proxy)]] |
 | H5 | **Room climate (dry/cold air) is something clinicians would act on** (advice on a humidifier, heating) | Keep temp/humidity in the core loop | Drop it to "not yet". It's a sensor we have, not a need they have | conversation | to verify | | |
 | H6 | **Danish chronic-cough researchers don't use objective cough counts *because* monitoring is too costly or laborious** (not because they don't need counts) | The ⚠️ link in [[11 🧭 Problem statement]] holds, and the research-tier problem lives. Book a pilot conversation | No need = the problem collapses → yellow, switch to the care-home statement (S6) | conversation | to verify | | **Proxy (desk):** all 4 Danish groups use registries/questionnaires only (S13); NEuroCOUGH uses self-report (S10). Reason unknown |
-| H7 | **Researchers value "nothing to wear, from the bedside, cheaper" enough to choose it over Hyfe's watch/app** | We have a reason to exist next to Hyfe; put it in the pitch | They're happy with Hyfe → no differentiation, drop the research tier or partner | conversation (+ Hyfe quote, desk) | to verify | | **Proxy (desk):** Hyfe already serves 50+ academic studies (S7); its academic price isn't public (S8) |
+| H7 | **Researchers value "nothing to wear, from the bedside, part of the smart home" enough to choose it over Hyfe's watch/app** | We have a reason to exist next to Hyfe; put it in the pitch | They're happy with Hyfe → no differentiation, drop the research tier or partner | conversation (+ Hyfe quote, desk) | to verify | | **Proxy (desk):** Hyfe already serves 50+ academic studies (S7); its academic price isn't public (S8) |
+| H8 | **Patients with chronic cough would keep a bedside smart-home assistant running every night, because it also improves their bedroom (climate control, integration with their smart home)** | The smart-home angle drives routine use, so it goes in the one-liner | It's a feature nobody needs → back to a plain bedside counter; also avoids extra regulatory risk from controlling devices | conversation (+ desk: smart-home adoption in DK) | to verify | | |
 
 ## Desk hypotheses (don't spend a conversation slot)
 
@@ -49,6 +50,7 @@
 | Date | What changed | Why |
 |---|---|---|
 | 2026-11-21 | v0 created | — |
+| 2026-11-21 | Key solution changed from "low-cost" to "bedside smart-home assistant"; H7 reworded, H8 added | User decision; the smart-home angle is untested |
 | 2026-11-21 | H6, H7 added from the two weak points in [[11 🧭 Problem statement]] | The problem statement v2 rests on them; H6 is now a gate criterion |
 | 2026-11-21 | S2, S3 closed. B1 (trials) deprioritised, B4 (care homes) becomes the main test | Competitors own trials and bedside, see [[07 ⚔️ Competition map]] |
 | 2026-11-21 | S7–S13 added and researched. S9, S11, S12, S13 confirmed; S7, S8, S10 partly. S14 logged (cohorts use self-report because of cost?), not researched | Research-tier problem weakened: Hyfe already serves academics, and the academic user group is tiny and absent in the Nordics |
