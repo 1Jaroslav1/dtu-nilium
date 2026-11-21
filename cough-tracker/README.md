@@ -25,6 +25,7 @@
 | 07 | [[07 ⚔️ Competition map]] | 11 | desk list to check |
 | 08 | [[08 📊 Market sizing — TAM SAM SOM]] | 4 | skeleton (blocked by beachhead) |
 | 09 | [[09 🚦 Decision gate]] | — | criteria pre-committed |
+| 10 | [[10 🔬 Trial design — measuring visible effects]] | — | desk research done |
 
 ## Next highest-leverage move
 

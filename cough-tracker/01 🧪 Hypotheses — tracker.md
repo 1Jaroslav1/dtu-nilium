@@ -29,8 +29,8 @@
 | # | Hypothesis | How to check | Time |
 |---|---|---|---|
 | S1 | The Atech mic module + ESP32-S3 can capture audio fast enough (≥8–16 kHz) to detect cough events on the device | Atech docs for the mic module; a 1-night test recording | 1–2 h |
-| S2 | Validated cough monitors exist and are priced out of reach for clinics and homes | Look up VitaloJAK, Leicester Cough Monitor, Hyfe, consumer sleep apps; note prices and who buys | 1 h |
-| S3 | Published evidence that a cough increase precedes COPD exacerbations | PubMed search: "cough frequency COPD exacerbation prediction" | 1 h |
+| S2 | Validated cough monitors exist and are priced out of reach for clinics and homes | **Done 2026-11-21.** They exist, including a CE-marked *bedside* one (Albus Home), FDA-cleared wearables (Strados, VitaloJAK) and a ~€30/yr phone app (Hyfe). Clinical prices aren't public. See [[07 ⚔️ Competition map]] | done |
+| S3 | Published evidence that a cough increase precedes COPD exacerbations | **Partly confirmed (Lung 2021):** night-cough alerts caught ~45% of exacerbations with ~1 false alert per 100 days, vs questionnaires at ~88% with 1 per 10 days. Low false alarms, low sensitivity | done |
 | S4 | Regulatory class: is counting coughs (no diagnosis) a medical device under the EU MDR? | MDR rule 11 for software; how comparable products are classified | 1 h |
 
 ## Change log
@@ -38,6 +38,7 @@
 | Date | What changed | Why |
 |---|---|---|
 | 2026-11-21 | v0 created | — |
+| 2026-11-21 | S2, S3 closed. B1 (trials) deprioritised, B4 (care homes) becomes the main test | Competitors own trials and bedside, see [[07 ⚔️ Competition map]] |
 
 ---
 
